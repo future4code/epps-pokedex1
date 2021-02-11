@@ -1,56 +1,51 @@
 import { React, useEffect, useState } from "react"
 import { useHistory } from "react-router-dom";
-import { goToPokedex } from "../../router/Coordinator"
-import { URL_POKEMONS } from "../../constants/url"
+import { goToPokeDetail, goToPokedex } from "../../router/Coordinator"
 import axios from 'axios'
 import CardPokemon from "../../components/CardContainer/CardPokemon";
 
 const HomePage = () => {
     const history = useHistory()
 
-    const [pokeList, setPokeList] = useState([])
-    const [pokeData, setPokeData] = useState([])
-
-    const pokeUrl = []
+    const [pokemon, setPokemon] = useState([])
 
     const getPokemon = () => {
-        axios
-        .get(URL_POKEMONS)
-        .then((response) => {
-            setPokeList(response.data.results)
-        }).catch ((err) => {
-            console.log(err)
-        })
+        const pokemonList = []
+
+        axios.get('https://pokeapi.co/api/v2/pokemon?limit=20&offset=0')
+            .then(res => {
+                pokemonList.push(res.data.results)
+                setPokemon(pokemonList)
+
+            }).catch(err => {
+                console.log(err)
+            })
     }
 
-    useEffect( () => {
+    useEffect(() => {
         getPokemon()
     }, [])
 
-    useEffect(() => {
-        pokeList.map((pokemon) => {
+    const PokeList = (
+    pokemon.map((poke) => {
+            return (
+                <CardPokemon
+                    key={poke.url}
+                    name={poke.name}
+                    url={poke.url}
+                /> 
+            )
+        }
+    ))
 
-            axios
-            .get(`URL_POKEMONS_DETAILS${pokemon.name}`)
-            .then((res) => {
-            pokeUrl.push(res.data)
-            setPokeData(pokeUrl)
-            })
-            .catch((err) => {
-                console.log(err)
-            }) 
-        })
-    }, [pokeList])
-
-    return (
+    return(
         <div>
             <button onClick={() => goToPokedex(history)}>Ir para a Pokedex</button>
-            {pokeData && pokeData.map ((pokemon) => {
-                return(
-                <CardPokemon pokemon={pokemon} />
-                )
-            }
-            )}
+            <button>Adicionar a Pokedex</button>
+            <button onClick={() => goToPokeDetail(history)}>Ver Detalhes</button>
+            <div>
+            {PokeList}
+            </div>
         </div>
     )
 
