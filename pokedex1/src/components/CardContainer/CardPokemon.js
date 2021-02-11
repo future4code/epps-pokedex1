@@ -8,6 +8,7 @@ function CardPokemon(props) {
     const history = useHistory()
 
     const [pokemonImage, setPokemonImage] = useState("")
+    const [changePage, setchangePage] = useState(true);
 
     useEffect(() => {
 
@@ -19,11 +20,18 @@ function CardPokemon(props) {
                     console.log(err)
                 })
     }, [])
+    
     return (
         <PokemonCardContainer>
-            <img src={pokemonImage}></img>
-            <button>Adicionar a Pokedex</button>
-            <button onClick={() => goToPokeDetail(history)}>Ver Detalhes</button>
+            <div>
+                <p>{props.name}</p>
+                <PokemonImage src={pokemonImage}></PokemonImage>
+                {changePage ?
+                <button onClick={props.addAPokedex || setchangePage(!changePage)}> Adicionar a poke </button>
+                :
+                <button onClick={props.remove || setchangePage(!changePage)}> Remover da poke </button>}
+                <button onClick={() => goToPokeDetail(history)}>Ver Detalhes</button>
+            </div>
         </PokemonCardContainer>
     )
 }
