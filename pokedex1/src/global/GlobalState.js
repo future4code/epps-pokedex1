@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import GlobalStateContext from "../contexts/GlobalStateContext"
-import { URL_POKEMONS, URL_POKEMONS_DETAILS } from "../constants/url";
+import { baseUrl } from "../constants/url";
 
 const GlobalState = (props) => {
     const [pokemons, setPokemons] = useState([])
@@ -10,10 +10,14 @@ const GlobalState = (props) => {
 
 
 const getPokemons = () => {
+
+    const PokeListBase = []
+
     axios
-        .get({URL_POKEMONS})
+        .get("https://pokeapi.co/api/v2/pokemon?limit=20" )
         .then((res) => {
-            setPokemons(res.data.results);
+            PokeListBase.push(res.data.results);
+            console.log(PokeListBase)
         })
         .catch((err) => {
             console.log(err.message);
@@ -33,7 +37,7 @@ const getPokemons = () => {
 
 const states = { pokemons, pokemonsList }
 const setters = { setPokemons, setPokemonsList }
-const requests = { getPokemons}
+const requests = { getPokemons }
 
 const data = { states, setters, requests }
 

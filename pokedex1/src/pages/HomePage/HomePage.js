@@ -26,9 +26,9 @@ function HomePage (props) {
 
     useEffect(() => {
         requests.getPokemons()
-    }, [])
+    },[requests])
 
-    const addAPokedex = (newPoke) => {
+    /*const addAPokedex = (newPoke) => {
         const index = states.pokemonsList.findIndex((i) => i.name === newPoke.name);
         let newPokedexList = [...states.pokemonsList];
     
@@ -40,29 +40,24 @@ function HomePage (props) {
           alert(`${newPoke.name} já está na pokedex`);
         }
         setters.setPokemonsList(newPokedexList)
-      }
+      } */
 
-    const Pokelist = states.pokemon &&
-    states.pokemon.map((poke) => {
+    const Pokelist = states.pokemons &&
+    states.pokemons.map((poke) => {
             return (
                 <CardPokemon
                     key={poke.url}
                     name={poke.name}
                     url={poke.url}
-                    addAPokedex={() => addAPokedex(poke)}
+                   // addAPokedex={() => addAPokedex(poke)}
                 /> 
             )
         }
     )
 
     return(
-        <div>
-            {/*  <button onClick={() => goToPokedex(history)}>Ir para a Pokedex</button>
-             <button>Adicionar a Pokedex</button>
-             <button onClick={() => goToPokeDetail(history)}>Ver Detalhes</button> */}
-            
-                <div>{Pokelist}</div>
-                
+        <div> 
+        {Pokelist}      
         </div>
     )
 
